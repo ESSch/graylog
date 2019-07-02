@@ -1,1 +1,1 @@
-Graylog instance
+install Graylog on Ubuntu
