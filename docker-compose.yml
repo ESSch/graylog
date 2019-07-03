@@ -7,7 +7,7 @@ services:
 #      - ./mongo_data:/data/db
   # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/6.6/docker.html
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.6.1
 #    volumes:
 #      - ./es_data/data:/usr/share/elasticsearch/data
 #      - ./es_data/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
@@ -52,11 +52,11 @@ services:
       - 12201:12201
       # GELF UDP
       - 12201:12201/udp
-#  kibana:
-#    image: docker.elastic.co/kibana/kibana:6.6.1
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.6.1
 #    volumes:
 #      - ./kibana_data/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
-#    depends_on:
-#      - elasticsearch
-#    ports:
-#      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
