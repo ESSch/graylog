@@ -1,11 +1,18 @@
-version: '2'
+version: '3.7'
+
 services:
   mongodb:
     image: mongo:3
+    healthcheck:
+      test: ["CMD", "mongo"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 #    volumes:
 #      - ./mongo_data:/data/db
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.1
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.1 # 7.2.0
 #    volumes:
 #      - ./es_data/data:/usr/share/elasticsearch/data
 #      - ./es_data/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
@@ -14,11 +21,16 @@ services:
       - transport.host=localhost
       - network.host=0.0.0.0
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    healthcheck:
+      test: ["CMD", "curl", "-fsSL", "http://localhost:9200/_cat/health?h=status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
     ports:
       - "9200:9200"
   graylog:
@@ -48,6 +60,12 @@ services:
       - 12201:12201
       # GELF UDP
       - 12201:12201/udp
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
   kibana:
     image: docker.elastic.co/kibana/kibana-oss:6.6.1
 #    volumes:
@@ -56,3 +74,9 @@ services:
       - elasticsearch
     ports:
       - "5601:5601"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5601"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
