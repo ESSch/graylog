@@ -24,7 +24,7 @@ services:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
     healthcheck:
-      test: ["CMD", "curl", "-fsSL", "http://localhost:9200/_cat/health?h=status"]
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:9200/_cat/health?h=status | grep 'green'"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -53,7 +53,7 @@ services:
       - bootstrap.memory_lock=true
       - "discovery.zen.ping.unicast.hosts=elasticsearch"
     healthcheck:
-      test: ["CMD", "curl", "-fsSL", "http://localhost:9200/_cat/health?h=status"]
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:9200/_cat/health?h=status | grep 'green'"]
       interval: 30s
       timeout: 10s
       retries: 5
