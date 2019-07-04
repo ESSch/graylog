@@ -1,9 +1,24 @@
 The run Kibana of localhost:5601 and Graylog of localhost:9001
 
-### Uses in docker compose
 ```bash
-docker-compose up
+ulimit -n 65536
+# reboot
 ```
+
+### Dev
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+firefox localhost:8082 # mongo_ui
+firefox localhost:9001 # graylog
+firefox localhost:5601 # kibana
+```
+### Prod
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
+firefox localhost:9001 # graylog
+firefox localhost:5601 # kibana
+```
+
 
 ### Uses in terraform
 
