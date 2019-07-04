@@ -15,8 +15,9 @@ firefox localhost:5601 # kibana
 ### Prod
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
-firefox localhost:9001 # graylog
+firefox localhost:9004 # graylog
 firefox localhost:5601 # kibana
+firefox localhost:5000 # elasticsearch-hq 
 ```
 
 
