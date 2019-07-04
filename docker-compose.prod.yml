@@ -77,3 +77,18 @@ services:
       timeout: 10s
       retries: 10
       start_period: 30s
+
+  balancer:
+    image: haproxy:1.7
+    ports:
+      - 9004:80
+    volumes:
+      - ./haproxy_conf/:/usr/local/etc/haproxy:ro
+    healthcheck:
+      test: ["CMD-SHELL", "apt update && apt install -y curl && curl -f localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    depends_on:
+      - graylog
