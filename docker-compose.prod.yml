@@ -99,7 +99,7 @@ services:
       - mongo-1-3
     healthcheck:
       retries: 15
-  graylog_slave:
+  graylog_slave: # todo: make own mongo
     image: graylog/graylog:3.0
     environment:
       - GRAYLOG_IS_MASTER=false
