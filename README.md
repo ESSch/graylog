@@ -7,14 +7,17 @@ ulimit -n 65536
 
 ### Dev
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+docker-compose -f docker-compose -f ../graylog/docker-compose.yml -f ../graylog//docker-compose.dev.yml down
 firefox localhost:8082 # mongo_ui
 firefox localhost:9001 # graylog
 firefox localhost:5601 # kibana
 ```
 ### Prod
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
+cd ..
+git clone https://github.com/senssei/mongo-cluster-docker.git
+cd mongo-cluster-docker
+docker-compose -f docker-compose.1.yml -f docker-compose.2.yml -f docker-compose.cnf.yml -f docker-compose.shard.yml -f ../graylog/docker-compose.yml -f ../graylog/docker-compose.prod.yml ps
 firefox localhost:9004 # graylog
 firefox localhost:5601 # kibana
 firefox localhost:5000 # elasticsearch-hq 

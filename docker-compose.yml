@@ -1,16 +1,6 @@
-version: '3.7'
+version: '3'
 
 services:
-  mongodb:
-    image: mongo:3.6
-    healthcheck:
-      test: ["CMD", "mongo"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
-    volumes:
-      - ./mongo_data:/data/db
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.7.2
@@ -24,7 +14,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 30s
     ulimits:
       memlock:
         soft: -1
@@ -35,23 +24,20 @@ services:
     ports:
       - "9200:9200"
 
+  # docker run --log-driver gelf --log-opt gelf-address='udp://127.0.0.1:12201' alpine echo 'hello world'
   graylog:
-    image: graylog/graylog:3.0.2
+    image: graylog/graylog:3.0
     environment:
       # CHANGE ME (must be at least 16 characters)!
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
-      # Password: admin
       - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9001/
-      - GRAYLOG_MONGODB_URI=mongodb://mongo:27017/graylog
 #    volumes:
 #      - ./graylog_data/:/usr/share/graylog/data/
 #      - ./graylog_log/:/var/log/ # tail -f ./graylog_log/haproxy.log
     links:
-      - mongodb:mongo
       - elasticsearch
     depends_on:
-      - mongodb
       - elasticsearch
     ports:
       # Graylog web interface and REST API
@@ -69,7 +55,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 10
-      start_period: 30s
 
   kibana:
     image: docker.elastic.co/kibana/kibana-oss:6.7.2
@@ -84,4 +69,3 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 30s

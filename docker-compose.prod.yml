@@ -1,6 +1,7 @@
-version: '3.7'
+version: '3'
 
 services:
+
   elasticsearch:
     environment:
       - cluster.name=docker-cluster
@@ -24,7 +25,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 30s
     ulimits:
       memlock:
         soft: -1
@@ -34,7 +34,6 @@ services:
         hard: 65535
     ports:
       - "9201:9200"
-
   elasticsearch_3:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.7.2
     #    volumes:
@@ -53,7 +52,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 30s
     ulimits:
       memlock:
         soft: -1
@@ -76,19 +74,47 @@ services:
       interval: 30s
       timeout: 10s
       retries: 10
-      start_period: 30s
 
   balancer:
     image: haproxy:1.7
     ports:
       - 9004:80
     volumes:
-      - ./haproxy_conf/:/usr/local/etc/haproxy:ro
+      - ../graylog/haproxy_conf/:/usr/local/etc/haproxy:ro
     healthcheck:
       test: ["CMD-SHELL", "apt update && apt install -y curl && curl -f localhost:80"]
       interval: 30s
       timeout: 10s
-      retries: 10
-      start_period: 30s
+      retries: 15
     depends_on:
       - graylog
+
+  graylog:
+    environment:
+      - GRAYLOG_IS_MASTER=true
+      - GRAYLOG_MONGODB_URI=mongodb://mongo-1-1:27017,mongo-1-2:27017,mongo-1-3:27017/graylog?replicaSet=rs1
+    depends_on:
+      - mongo-1-1
+      - mongo-1-2
+      - mongo-1-3
+    healthcheck:
+      retries: 15
+  graylog_slave:
+    image: graylog/graylog:3.0
+    environment:
+      - GRAYLOG_IS_MASTER=false
+      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9002/
+      - GRAYLOG_MONGODB_URI=mongodb://mongo-1-1:27017,mongo-1-2:27017,mongo-1-3:27017/graylog?replicaSet=rs1
+    ports:
+      - 9002:9000
+    links:
+      - elasticsearch
+    depends_on:
+      - graylog
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000"]
+      interval: 30s
+      timeout: 10s
+      retries: 15
