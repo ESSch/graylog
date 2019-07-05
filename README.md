@@ -1,11 +1,11 @@
-The run Kibana of localhost:5601 and Graylog of localhost:9001
+# The Graylog
 
 ## Dev
-### run dev
+### Uses
 ```bash
 docker-compose -f docker-compose -f ../graylog/docker-compose.yml -f ../graylog//docker-compose.dev.yml down
 ```
-### Dev result
+### Check a result
 ```
 $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml ps
          Name                        Command                       State                                                        Ports                                             
@@ -17,7 +17,7 @@ graylog_kibana_1          /usr/local/bin/kibana-docker     Up (healthy)         
 graylog_mongo-express_1   tini -- /docker-entrypoint ...   Up (health: starting)   0.0.0.0:8082->8081/tcp                                                                         
 graylog_mongodb_1         docker-entrypoint.sh mongod      Up (healthy)            27017/tcp                
 ```
-### Watch result
+### Watch a result
 ```bash
 firefox localhost:9001 # graylog
 firefox localhost:8082 # mongo_ui
@@ -25,14 +25,14 @@ firefox localhost:5601 # kibana
 ```
 
 ## Prod
-### run prod
+### Uses
 ```bash
 cd ..
 git clone https://github.com/senssei/mongo-cluster-docker.git
 cd mongo-cluster-docker
 docker-compose -f docker-compose.1.yml -f docker-compose.2.yml -f docker-compose.cnf.yml -f docker-compose.shard.yml -f ../graylog/docker-compose.yml -f ../graylog/docker-compose.prod.yml ps
 ```
-### Prod result
+### Check a result
 ```
 $ docker-compose -f docker-compose.1.yml -f docker-compose.2.yml -f docker-compose.cnf.yml -f docker-compose.shard.yml -f ../graylog/docker-compose.yml -f ../graylog/docker-compose.prod.yml ps
                  Name                               Command                       State                                                Ports                                      
@@ -61,7 +61,7 @@ mongo-rs1-setup                          /scripts/setup.sh                Exit 0
 mongo-rs2-setup                          /scripts/setup.sh                Exit 0                                                                                                  
 mongo-shard-setup                        /scripts/init-shard.sh           Exit 0       
 ```
-### Watch result 
+### Watch a result 
 ```bash
 firefox localhost:9004 # graylog
 firefox localhost:5601 # kibana
@@ -70,7 +70,7 @@ firefox localhost:9004/haproxy # graylog stat
 ```
 
 ## Prod infrastructure
-### Make config for Terraform
+### Example a config for Google Cloud Platform
 ```yaml
 provider "google" {
   credentials = file("./kubernetes_key.json")
