@@ -1,11 +1,9 @@
 The run Kibana of localhost:5601 and Graylog of localhost:9001
 
+## Dev
 ### run dev
 ```bash
 docker-compose -f docker-compose -f ../graylog/docker-compose.yml -f ../graylog//docker-compose.dev.yml down
-firefox localhost:8082 # mongo_ui
-firefox localhost:9001 # graylog
-firefox localhost:5601 # kibana
 ```
 ### Dev result
 ```
@@ -19,17 +17,20 @@ graylog_kibana_1          /usr/local/bin/kibana-docker     Up (healthy)         
 graylog_mongo-express_1   tini -- /docker-entrypoint ...   Up (health: starting)   0.0.0.0:8082->8081/tcp                                                                         
 graylog_mongodb_1         docker-entrypoint.sh mongod      Up (healthy)            27017/tcp                
 ```
+### Watch result
+```bash
+firefox localhost:9001 # graylog
+firefox localhost:8082 # mongo_ui
+firefox localhost:5601 # kibana
+```
 
+## Prod
 ### run prod
 ```bash
 cd ..
 git clone https://github.com/senssei/mongo-cluster-docker.git
 cd mongo-cluster-docker
 docker-compose -f docker-compose.1.yml -f docker-compose.2.yml -f docker-compose.cnf.yml -f docker-compose.shard.yml -f ../graylog/docker-compose.yml -f ../graylog/docker-compose.prod.yml ps
-firefox localhost:9004 # graylog
-firefox localhost:5601 # kibana
-firefox localhost:5000 # elasticsearch-hq 
-firefox localhost:9004/haproxy # graylog stat
 ```
 ### Prod result
 ```
@@ -60,9 +61,16 @@ mongo-rs1-setup                          /scripts/setup.sh                Exit 0
 mongo-rs2-setup                          /scripts/setup.sh                Exit 0                                                                                                  
 mongo-shard-setup                        /scripts/init-shard.sh           Exit 0       
 ```
+### Watch result 
+```bash
+firefox localhost:9004 # graylog
+firefox localhost:5601 # kibana
+firefox localhost:5000 # elasticsearch-hq 
+firefox localhost:9004/haproxy # graylog stat
+```
 
-### Uses in terraform (todo make)
-
+## Prod infrastructure
+### Make config for Terraform
 ```yaml
 provider "google" {
   credentials = file("./kubernetes_key.json")
@@ -74,4 +82,9 @@ module "kubernetes" {
   source  = "ESSch/kubernetes/graylog"
   version = "~>0.0.1"
 }
+```
+### Create (todo)
+```bash
+terraform init
+terraform apply
 ```
