@@ -24,6 +24,12 @@ firefox localhost:8082 # mongo_ui
 firefox localhost:5601 # kibana
 ```
 
+## Mini prod
+### Uses (todo)
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.mongo-rs.yml ps # todo
+```
+
 ## Prod
 ### Uses
 ```bash
