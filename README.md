@@ -3,7 +3,7 @@
 ## Dev
 ### Uses
 ```bash
-docker-compose -f docker-compose -f ../graylog/docker-compose.yml -f ../graylog//docker-compose.dev.yml down
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 ### Check a result
 ```
@@ -23,11 +23,22 @@ firefox localhost:9001 # graylog
 firefox localhost:8082 # mongo_ui
 firefox localhost:5601 # kibana
 ```
+### Resources
+CPU usage is 7% of Laptop. RAM usage is 2076.33MiB.
+```bash
+docker ps --filter="network=graylog_default" -q | docker stats
+CONTAINER ID        NAME                                     CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O           PIDS
+44d179290028        graylog_graylog_1                        0.49%               517MiB / 15.55GiB     3.25%               2.62MB / 1.65MB     396MB / 639kB       126
+45215941e56d        graylog_mongo-express_1                  0.01%               26.14MiB / 15.55GiB   0.16%               40.7kB / 22.1kB     53.1MB / 8.19kB     11
+65edf640be3c        graylog_kibana_1                         0.44%               98.74MiB / 15.55GiB   0.62%               121kB / 145kB       154MB / 8.19kB      11
+ac29a0f9c36c        graylog_mongodb_1                        0.87%               47.45MiB / 15.55GiB   0.30%               1.55MB / 2.44MB     160MB / 13.8MB      35
+e81cf680b4b1        graylog_elasticsearch_1                  5.19%               1.384GiB / 15.55GiB   8.90%               290kB / 304kB       168MB / 942kB       69
+```
 
 ## Mini prod
 ### Uses (todo)
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.mongo-rs.yml ps # todo
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.mongo-rs.yml up # todo
 ```
 
 ## Prod
@@ -36,7 +47,8 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compos
 cd ..
 git clone https://github.com/senssei/mongo-cluster-docker.git
 cd mongo-cluster-docker
-docker-compose -f docker-compose.1.yml -f docker-compose.2.yml -f docker-compose.cnf.yml -f docker-compose.shard.yml -f ../graylog/docker-compose.yml -f ../graylog/docker-compose.prod.yml ps
+docker-compose -f docker-compose.1.yml -f docker-compose.2.yml -f docker-compose.cnf.yml -f docker-compose.shard.yml \ 
+-f ../graylog/docker-compose.yml -f ../graylog/docker-compose.prod.yml up
 ```
 ### Check a result
 ```
@@ -73,6 +85,10 @@ firefox localhost:9004 # graylog
 firefox localhost:5601 # kibana
 firefox localhost:5000 # elasticsearch-hq 
 firefox localhost:9004/haproxy # graylog stat
+```
+### Resources
+```bash
+
 ```
 
 ## Prod infrastructure
