@@ -83,8 +83,13 @@ module "kubernetes" {
   version = "~>0.0.1"
 }
 ```
-### Create (todo)
+### Create a infrastructure for the micro-services (todo)
 ```bash
 terraform init
 terraform apply
+```
+
+### Deploy
+```bash
+docker deploy -c docker-compose.yml app
 ```

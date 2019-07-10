@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  scope:
+    image: ubuntu
+    network_mode: "host"
+    pid: "host"
+    privileged: true
+    labels:
+      - "works.weave.role=system"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
+    command: >
+      bash -c 'apt update && apt install -y curl && curl -fsSL get.docker.com -o get-docker.sh &&
+      sh get-docker.sh && curl -L git.io/scope -o ./scope && chmod a+x scope &&  ./scope launch'
