@@ -47,8 +47,8 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compos
 cd ..
 git clone https://github.com/senssei/mongo-cluster-docker.git
 cd mongo-cluster-docker
-docker-compose -f docker-compose.1.yml -f docker-compose.2.yml -f docker-compose.cnf.yml -f docker-compose.shard.yml \ 
--f ../graylog/docker-compose.yml -f ../graylog/docker-compose.prod.yml up
+docker-compose -f docker-compose.1.yml -f docker-compose.2.yml -f docker-compose.cnf.yml -f docker-compose.shard.yml \
+-f ../graylog/docker-compose.yml -f ../graylog/docker-compose.prod.yml up 
 ```
 ### Check a result
 ```
@@ -87,8 +87,27 @@ firefox localhost:5000 # elasticsearch-hq
 firefox localhost:9004/haproxy # graylog stat
 ```
 ### Resources
+CPU usage is 26.89%. Memory usage is 5.2GiB.
 ```bash
-
+CONTAINER ID        NAME                                     CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O           PIDS
+118e5db16f22        mongo-2-1                                0.54%               17.73MiB / 15.55GiB   0.11%               1.16MB / 2.37MB     25.4MB / 6.05MB     85
+591cfcdcada1        mongo-cnf-3                              1.69%               22.84MiB / 15.55GiB   0.14%               1.4MB / 1.41MB      15.2MB / 11.7MB     84
+106c25cf52df        mongo-cluster-docker_elasticsearch_1     0.35%               1.375GiB / 15.55GiB   8.84%               198kB / 145kB       132MB / 1.18MB      67
+6b9f3f702e0f        mongo-1-2                                0.87%               24.28MiB / 15.55GiB   0.15%               2.25MB / 1.98MB     22.9MB / 16.7MB     80
+362e1768989a        mongo-cluster-docker_elasticsearch_2_1   0.23%               1.375GiB / 15.55GiB   8.84%               11.6kB / 306B       136MB / 319kB       54
+1a61c853373a        mongo-2-2                                0.61%               18.15MiB / 15.55GiB   0.11%               944kB / 900kB       8.45MB / 6.68MB     79
+9ad1bd827660        mongo-1-3                                1.49%               24.2MiB / 15.55GiB    0.15%               2.26MB / 1.98MB     12.5MB / 16.9MB     80
+d60a08c4def5        mongo-cnf-2                              1.65%               22.02MiB / 15.55GiB   0.14%               1.56MB / 1.49MB     33.6MB / 11.2MB     84
+d6d28f6793df        mongo-2-3                                0.59%               18.14MiB / 15.55GiB   0.11%               944kB / 898kB       16.8MB / 6.85MB     78
+b44bc1e09af8        mongo-cluster-docker_elasticsearch_3_1   0.25%               1.398GiB / 15.55GiB   8.99%               14.6kB / 306B       463MB / 991kB       54
+be6b471528bb        mongo-cluster-docker_elastichq_1         0.04%               30.92MiB / 15.55GiB   0.19%               10.7kB / 0B         123MB / 90.1kB      3
+1364451db688        mongo-1-1                                1.03%               25.41MiB / 15.55GiB   0.16%               5MB / 8.2MB         82MB / 16.7MB       96
+aeef6e8d554a        mongo-cluster-docker_graylog_1           15.39%              258.2MiB / 15.55GiB   1.62%               969kB / 399kB       442MB / 770kB       75
+a20b0f2525b0        mongo-cluster-docker_kibana_1            0.00%               78.82MiB / 15.55GiB   0.50%               153kB / 186kB       239MB / 57.3kB      11
+19b04071bcc5        mongo-cnf-1                              1.47%               34.2MiB / 15.55GiB    0.21%               4.44MB / 2.23MB     81.1MB / 10.6MB     93
+ca5e65ea4229        mongo-cluster-docker_balancer_1          0.01%               12.86MiB / 15.55GiB   0.08%               15MB / 292kB        189MB / 88.4MB      3
+949f16663868        mongo-cluster-docker_graylog_slave_1     0.37%               484.6MiB / 15.55GiB   3.04%               2.53MB / 1.57MB     450MB / 1.65MB      129
+9337d601b7a1        mongo-router                             0.31%               7.344MiB / 15.55GiB   0.05%               396kB / 312kB       71.9MB / 0B         19
 ```
 
 ## Prod infrastructure
