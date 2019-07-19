@@ -4,8 +4,6 @@ services:
   example:
     image: ubuntu
     command: bash -c "for i in `seq 1 1000`; do echo 'the a example container '$i; sleep 1; done;"
-    depends_on:
-      - graylog
     logging:
       driver: "gelf"
       options:
