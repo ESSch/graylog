@@ -1,5 +1,19 @@
 # The Graylog
 
+## Common
+### Start
+```bash
+git clone https://github.com/ESSch/graylog.git
+cd graylog/
+```
+```yaml
+    logging:
+    driver: "gelf"
+    options:
+      gelf-address: "udp://graylog:12201"
+      tag: "api"
+```
+
 ## Dev
 ### Uses
 ```bash
@@ -22,6 +36,9 @@ graylog_mongodb_1         docker-entrypoint.sh mongod      Up (healthy)         
 firefox localhost:9001 # graylog
 firefox localhost:8082 # mongo_ui
 firefox localhost:5601 # kibana
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml logs mongo-express
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml logs -f
+
 ```
 ### Resources
 CPU usage is 7% of Laptop. RAM usage is 2076.33MiB.
