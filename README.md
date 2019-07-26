@@ -19,6 +19,9 @@ cd graylog/
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
+```bash
+docker stack deploy -c docker-compose.yml -c docker-compose.dev.yml graylog
+```
 ### Check a result
 ```
 $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml ps
