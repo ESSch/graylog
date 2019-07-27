@@ -25,13 +25,13 @@ services:
       - "9200:9200"
 
   # docker run --log-driver gelf --log-opt gelf-address='udp://127.0.0.1:12201' alpine echo 'hello world'
+  # curl http://localhost:9001
   graylog:
     image: graylog/graylog:3.0
     environment:
-      # CHANGE ME (must be at least 16 characters)!
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
       - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9001/
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://${GRAYLOG_HOST}:9001/
 #    volumes:
 #      - ./graylog_data/:/usr/share/graylog/data/
 #      - ./graylog_log/:/var/log/ # tail -f ./graylog_log/haproxy.log

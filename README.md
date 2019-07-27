@@ -15,12 +15,27 @@ cd graylog/
 ```
 
 ## Dev
+### Dependence
+```bash
+# cat .env 
+GRAYLOG_HOST=YOUR_HOST.ru
+```
 ### Uses
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d;
+sleep 140;
 ```
+or
 ```bash
 docker stack deploy -c docker-compose.yml -c docker-compose.dev.yml graylog
+```
+### Whath logs
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml logs
+```
+or
+```bash
+# docker service logs graylog_mongodb
 ```
 ### Check a result
 ```
@@ -36,12 +51,11 @@ graylog_mongodb_1         docker-entrypoint.sh mongod      Up (healthy)         
 ```
 ### Watch a result
 ```bash
-firefox localhost:9001 # graylog
+firefox localhost:9001 # graylog: logon "admin" and password "admin"
 firefox localhost:8082 # mongo_ui
 firefox localhost:5601 # kibana
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml logs mongo-express
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml logs -f
-
 ```
 ### Resources
 CPU usage is 7% of Laptop. RAM usage is 2076.33MiB.
@@ -54,11 +68,19 @@ CONTAINER ID        NAME                                     CPU %              
 ac29a0f9c36c        graylog_mongodb_1                        0.87%               47.45MiB / 15.55GiB   0.30%               1.55MB / 2.44MB     160MB / 13.8MB      35
 e81cf680b4b1        graylog_elasticsearch_1                  5.19%               1.384GiB / 15.55GiB   8.90%               290kB / 304kB       168MB / 942kB       69
 ```
-
-## Mini prod
-### Uses (todo)
+### Update
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.mongo-rs.yml up # todo
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml down
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+```
+or 
+```bash
+# docker service rollback graylog_mongodb 
+```
+### Test Graylog
+```bash
+# docker run --rm --log-driver gelf --log-opt gelf-address='udp://127.0.0.1:12201' alpine echo 'message for Graylog'
+#  docker run --rm --log-driver gelf --net host --log-opt gelf-address='udp://0.0.0.0:12201' alpine echo 'message for Graylog'
 ```
 
 ## Prod
