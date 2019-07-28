@@ -8,3 +8,5 @@ services:
     environment:
       - GRAYLOG_MONGODB_URI=mongodb://${GRAYLOG_HOST_MASTER}:27017/graylog
       - GRAYLOG_IS_MASTER=false
+      # - GRAYLOG_ELASTICSEARCH_HOSTS=http://${GRAYLOG_HOST_MASTER}:9200 # don't work
+
