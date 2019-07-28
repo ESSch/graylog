@@ -1,0 +1,47 @@
+version: '3'
+
+#  docker stack deploy -c docker-compose.yml -c docker-compose.dev.yml -c docker-compose.
+services:
+  # todo: --net host и выполнить настроки в зависимости от хоста
+  graylog:
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+  graylog_slave:
+    image: graylog/graylog:3.0
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://${GRAYLOG_HOST_SLAVE}:9001/
+      - GRAYLOG_MONGODB_URI=mongodb://mongo:27017/graylog
+      - GRAYLOG_IS_MASTER=false
+    #    volumes:
+    #      - ./graylog_data/:/usr/share/graylog/data/
+    #      - ./graylog_log/:/var/log/ # tail -f ./graylog_log/haproxy.log
+    links:
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+    ports:
+      # Graylog web interface and REST API
+      - 9001:9000
+      # Syslog TCP
+      - 1514:1514
+      # Syslog UDP
+      - 1514:1514/udp
+      # GELF TCP
+      - 12201:12201
+      # GELF UDP
+      - 12201:12201/udp
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    deploy:
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker

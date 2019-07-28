@@ -38,7 +38,7 @@ sleep 140;
 docker stack ps graylog;
 ```
 ```bash
-firefox YOUR_HOST:9001
+firefox $GRAYLOG_HOST:9001
 ```
 ### Whath logs
 ```bash
@@ -49,7 +49,7 @@ or
 docker service logs graylog_graylog
 ```
 ### Check a result
-```
+```bash
 $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml ps
          Name                        Command                       State                                                        Ports                                             
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

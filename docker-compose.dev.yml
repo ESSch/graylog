@@ -9,6 +9,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    ports:
+      - 27017:27017
     deploy:
       restart_policy:
         condition: on-failure
@@ -37,3 +39,4 @@ services:
       - mongo
     environment:
       - GRAYLOG_MONGODB_URI=mongodb://mongo:27017/graylog
+      - GRAYLOG_IS_MASTER=true

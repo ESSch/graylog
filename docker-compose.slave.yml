@@ -1,0 +1,10 @@
+version: '3'
+
+#  docker stack deploy -c docker-compose.yml -c docker-compose.dev.yml -c docker-compose.
+services:
+  graylog:
+    depends_on:
+      - mongo
+    environment:
+      - GRAYLOG_MONGODB_URI=mongodb://${GRAYLOG_HOST_MASTER}:27017/graylog
+      - GRAYLOG_IS_MASTER=false
