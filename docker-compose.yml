@@ -23,6 +23,9 @@ services:
         hard: 65535
     ports:
       - "9200:9200"
+    deploy:
+      restart_policy:
+        condition: on-failure
 
   # docker run --log-driver gelf --log-opt gelf-address='udp://127.0.0.1:12201' alpine echo 'hello world'
   # curl http://localhost:9001
@@ -55,6 +58,9 @@ services:
       interval: 30s
       timeout: 10s
       retries: 10
+    deploy:
+      restart_policy:
+        condition: on-failure
 
   kibana:
     image: docker.elastic.co/kibana/kibana-oss:6.7.2
@@ -69,8 +75,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-#    logging:
-#      driver: "gelf"
-#      options:
-#        gelf-address: "udp://graylog:12201"
-#        tag: "kibana"
+    deploy:
+      restart_policy:
+        condition: on-failure

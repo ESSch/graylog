@@ -2,13 +2,16 @@ version: '3'
 
 services:
 
-  mongodb:
+  mongo:
     image: mongo:3.6
     healthcheck:
       test: ["CMD", "mongo"]
       interval: 30s
       timeout: 10s
       retries: 5
+    deploy:
+      restart_policy:
+        condition: on-failure
   #    volumes:
   #      - ./mongo_data:/data/db
 
@@ -22,15 +25,15 @@ services:
       interval: 70s
       timeout: 50s
       retries: 5
-    links:
-      - mongodb:mongo
     depends_on:
-      - mongodb
+      - mongo
+    command: "apk add curl && atini -- npm start"
+    deploy:
+      restart_policy:
+        condition: on-failure
 
   graylog:
     depends_on:
-      - mongodb
-    links:
-      - mongodb:mongo
+      - mongo
     environment:
       - GRAYLOG_MONGODB_URI=mongodb://mongo:27017/graylog
