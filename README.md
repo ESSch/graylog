@@ -6,6 +6,8 @@
 git clone https://github.com/ESSch/graylog.git
 cd graylog/
 ```
+### Connect
+Simple connect 
 ```yaml
     logging:
     driver: "gelf"
@@ -13,21 +15,30 @@ cd graylog/
       gelf-address: "udp://graylog:12201"
       tag: "api"
 ```
-
-## Dev
-### Dependence
+or common connect 
 ```bash
-# cat .env 
-GRAYLOG_HOST=YOUR_HOST.ru
+cp daemon.json /etc/docker/
+systemctl restart docker
+```
+## Dev
+### Preparation
+```bash
+export GRAYLOG_HOST=YOUR_HOST
 ```
 ### Uses
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d;
 sleep 140;
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml ps;
 ```
 or
 ```bash
-docker stack deploy -c docker-compose.yml -c docker-compose.dev.yml graylog
+docker stack deploy -c docker-compose.yml -c docker-compose.dev.yml graylog;
+sleep 140;
+docker stack ps graylog;
+```
+```bash
+firefox YOUR_HOST:9001
 ```
 ### Whath logs
 ```bash
@@ -35,7 +46,7 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml logs
 ```
 or
 ```bash
-# docker service logs graylog_mongodb
+docker service logs graylog_graylog
 ```
 ### Check a result
 ```
@@ -78,9 +89,13 @@ or
 # docker service rollback graylog_mongodb 
 ```
 ### Test Graylog
+#### GEFL at local
 ```bash
-# docker run --rm --log-driver gelf --log-opt gelf-address='udp://127.0.0.1:12201' alpine echo 'message for Graylog'
-#  docker run --rm --log-driver gelf --net host --log-opt gelf-address='udp://0.0.0.0:12201' alpine echo 'message for Graylog'
+echo -n '{ "version": "1.1", "host": "example.org", "short_message": "A short message", "level": 5, "_some_info": "foo" }' | nc -w0 -u localhost 12201
+```
+#### GEFL of a container
+```bash
+docker run --rm --log-driver gelf --log-opt gelf-address='udp://127.0.0.1:12201' alpine echo 'message for Graylog'
 ```
 
 ## Prod
