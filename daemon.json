@@ -1,0 +1,6 @@
+{
+  "log-driver": "gelf",
+  "log-opts": {
+    "gelf-address": "udp://sutest.su22.ru:12201"
+  }
+}
