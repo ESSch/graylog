@@ -24,7 +24,9 @@ systemctl restart docker
 ### Preparation
 ```bash
 export GRAYLOG_HOST=YOUR_HOST
+export GRAYLOG_HOST_MASTER=YOUR_HOST_MASTER
 ```
+If changed, don't will use restart, use down and up.
 ### Uses
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d;
